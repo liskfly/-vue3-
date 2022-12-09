@@ -1,0 +1,19 @@
+@font-face {
+    font-family: '穿越寒冬拥抱你';
+    src: url(./fonts/穿越寒冬拥抱你.ttf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Aa武道家';
+    src: url(./fonts/Aa武道家.ttf);
+    font-weight: bold;
+    /*
+    font-family：所指定的字体名字将会被用于font或font-family属性
+    src: 在线字体文件
+    font-variant 设置当前自定义字体是大小写描述。
+    font-stretch 设置当前自定义字体的伸缩变形描述。
+    font-weight 设置当前自定义字体的粗细描述。
+    font-style：对于src所指字体的描述。如果所需字体符合描述，则采用本font-face所定义的字体。
+    */
+}
