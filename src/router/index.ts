@@ -60,16 +60,25 @@ const router = createRouter({
         keepAlive: false,
       },
     },
+    // 音频专区路由
+    {
+      path: '/audio-series',
+      name: 'audio-series',
+      component: () => import("../components/AudioSeriesView.vue"),
+      meta: {
+        keepAlive: false,
+      },
+    },
 
-    // 阅读
-    // {
-    //   path: '/',
-    //   name: 'read',
-    //   component: ReadView,
-    //   meta: {
-    //     keepAlive: true,
-    //   },
-    // },
+    // 首页搜索
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import("../search/HomeSearch.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    },
     {
       path: '/choicebook',
       name: 'choicebook',

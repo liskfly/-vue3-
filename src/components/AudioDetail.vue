@@ -4,41 +4,99 @@ import type { AudioDetail } from "../typing"
 import { useRoute, useRouter } from 'vue-router';
 import { API } from "../apis/getData"
 import { getDate, getIcon } from '../utils/index'
+import { storeToRefs } from 'pinia'
+import { audioplay } from '@/stores/audioplay'
+import AudioPlay from '../components/AudioPlay.vue'
 
+const store = audioplay()
+const audio = ref()
+const { cur, progress, playAudio } = storeToRefs(store)
+const { getCurr, getTotalTime, changeStatus } = store
 const route = useRoute();
 const router = useRouter();
+// const id: any = route.query.detail_id;
+const id: any = ref(route.query.detail_id)
+const detail = ref<AudioDetail>()
+const showPlay = ref(false)
 
-const id: any = route.query.detail_id
+
+const hideAudioPlay = (val: any) => {
+    showPlay.value = val.content
+}
+
+const changeAudioId = (val: any) => {
+    console.log(val.audioid);
+    id.value = val.audioid
+}
 
 const goBack = () => {
     window.history.go(-1)
 }
 
-const detail = ref<AudioDetail>()
+const goToAudioPlay = () => {
+    showPlay.value = true
+}
+
+const stopAudio = () => {
+    changeStatus()
+
+}
+
+const getCurrentTime = () => {
+    let time: number = audio.value?.currentTime
+    getCurr(time)
+}
+
 onMounted(async () => {
-    let { data } = await API.getAudioData(id)
+    let { data } = await API.getAudioData(id.value)
     console.log(data);
     detail.value = data.data
+    playAudio.value = true
+    getTotalTime(detail.value?.audio_duration)
+})
+
+watch(id, async (newV, oldV) => {
+    console.log(newV, oldV);
+    let { data } = await API.getAudioData(newV)
+    console.log(data);
+    detail.value = data.data
+    progress.value = 0
+    playAudio.value = true
+    getTotalTime(detail.value?.audio_duration)
+})
+
+watch(cur, (time) => {
+    audio.value.currentTime = time
+})
+
+watch(playAudio, (bool) => {
+    if (bool) {
+        audio.value.play()
+    } else {
+        audio.value.pause()
+    }
 })
 
 </script>
 
 <script lang="ts">
 export default {
-  name: "audioPage",
+    name: "audioDetail",
 };
 </script>
 
 
 <template>
-    <div class="audiodetail">
-        <div class="header" v-if="detail">
+    <van-loading style="margin-top: 10vh;" v-if="!detail" size="24px" vertical>加载中...</van-loading>
+    <!-- <div style="margin-top: 10vh;">{{ audioData }}</div> -->
+    <div v-if="detail" class="audiodetail">
+        <div class="header">
             <img src="../assets/img/P4.png" alt="返回" class="back" @click="goBack" />
             <span>{{ detail.audio_title }}</span>
             <img src="../assets/img/OE.png" alt="更多" class="gd" />
         </div>
 
-        <div class="detail" v-if="detail">
+        <div class="detail">
             <!-- <van-loading color="#1989fa" v-show="pageLoading" /> -->
             <div class="detail-title">
                 <p>{{ detail.title }}</p>
@@ -61,6 +119,21 @@ export default {
                 </div>
             </div>
         </div>
+
+        <div class="audio-box" v-show="detail.audio_url" @click="goToAudioPlay">
+            <audio :src="detail.audio_url" ref="audio" @timeupdate="getCurrentTime" autoplay></audio>
+            <!-- <img src="@/assets/img/Zg.png" alt="sh" @click.stop="clearAudio" /> -->
+            <p>{{ detail.title }}</p>
+            <i></i>
+            <div class="control" :class="{ showbox: playAudio }" @click.stop="stopAudio"></div>
+        </div>
+
+        <van-popup v-model:show="showPlay" position="bottom" :style="{ height: '100%' }">
+            <!-- <AudioPlay @sent-appId="sentAudioId" @sent-play="sentPlay" @set-audioTime="setAudioTime"
+                @hide-play="hidePlay" @set-speed="setSpeed" :playAudio="playAudio" :curr="curr" :speed="speed"
+                :audioCon="audioCon" :audioArr="audioArr" /> -->
+            <AudioPlay @hide="hideAudioPlay" @audioid="changeAudioId" :detail="detail"></AudioPlay>
+        </van-popup>
 
         <!-- <div class="detail-bottom">
             <ArticleFooter :article="detail" />
@@ -201,6 +274,52 @@ export default {
                     color: #888;
                 }
             }
+        }
+    }
+
+    .audio-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        position: fixed;
+        left: 3vw;
+        bottom: 60px;
+        border-radius: 5px;
+        padding: 6px 10px;
+        width: 94vw;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 100;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+
+        p {
+            flex: 1;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        i {
+            width: 16px;
+            height: 16px;
+            background-image: url(@/assets/img/oK.png);
+            background-size: contain;
+        }
+
+        .control {
+            width: 28px;
+            height: 28px;
+            background-image: url(@/assets/img/ZR.png);
+            background-size: contain;
+        }
+
+        .showbox {
+            background-image: url(@/assets/img/x5.png);
         }
     }
 }

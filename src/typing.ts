@@ -60,22 +60,14 @@ export interface ArticleContent {
         id: number,
         name: string
     }],
-    summary:string,
-    content:string,
-    probation:boolean
+    summary: string,
+    content: string,
+    probation: boolean
 }
 
-export interface ArticleRecommend{
-    cover_url:string,
-    title:string
-}
-
-export interface AudioDetail{
-    title:string,
-    audio_title:string,
-    display_time:string,
-    content:string,
-    favorite_times:number
+export interface ArticleRecommend {
+    cover_url: string,
+    title: string
 }
 
 export interface Catalogue {
@@ -160,4 +152,42 @@ export interface CollectionList {
     }],
     votes:any,
     editor_choice_comments:any
+}
+
+export interface AudioDetail {
+    title: string,
+    audio_title: string,
+    display_time: string,
+    content: string,
+    favorite_times: number,
+    article_info_url:string,
+    audio_url:string,
+    audio_duration:number
+}
+
+export interface AudioSeries {
+    id: number,
+    name: string,
+    cover_url_chang: string,
+    audio_serie_count: number,
+    content: string
+    articles: [{
+        id: number,
+        cover_url: string,
+        title: string,
+        summary: string,
+        visit_times: number,
+        audio_duration: number
+    }]
+}
+
+export interface Comment {
+    id: number,
+    display_time: string,
+    content: string,
+    like_times: number,
+    user: {
+        nickname: string,
+        avatar: string
+    }
 }

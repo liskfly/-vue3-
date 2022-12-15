@@ -4,6 +4,7 @@ import { ref, onMounted, nextTick } from "vue"
 import type { BannersType, Area, Popular } from "../typing"
 import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const banners = ref<BannersType[]>([])
 const areas = ref<Area[]>([])
 const populars = ref<Popular[]>([])
@@ -16,13 +17,22 @@ const audioTime = (num: number) => {
     return min + ":" + sec;
 }
 
-const router = useRouter()
 // 跳转音频详情
 const goToAudioDetail = (id: number) => {
     router.push({
         path: '/audio-detail',
         query: {
             detail_id: id
+        }
+    })
+}
+// 专区
+const goToAudioSeries = (type: string, id: number) => {
+    router.push({
+        path: '/audio-series',
+        query: {
+            audio_type: type,
+            Arera_id: id
         }
     })
 }
@@ -60,7 +70,7 @@ onMounted(async () => {
             <h2>精品专区</h2>
             <span class="text">大家都在听</span>
             <div class="list">
-                <div class="box" v-for="t in areas" :key="t.id" @click="">
+                <div class="box" v-for="t in areas" :key="t.id" @click="goToAudioSeries(t.audio_type, t.id)">
                     <div class="area-img">
                         <img v-lazy="t.cover_url" />
                         <div class="visit_times"><i></i> <span>{{ t.visit_times }}</span></div>
@@ -98,13 +108,6 @@ onMounted(async () => {
                 </div>
             </div>
         </div>
-
-        <!-- <HomeHead v-show="$route.meta.showfater" :banner="banner"></HomeHead>
-        <van-popup v-model="showSearch" position="right" :style="{ height: '100%' }">
-            <SearchBar @show-search="goBackAudio" />
-        </van-popup>
-        <BoutiqueArea v-show="$route.meta.showfater" :area="area"></BoutiqueArea>
-        <PopularRed v-show="$route.meta.showfater" :popular="popular"></PopularRed> -->
     </div>
 
 
