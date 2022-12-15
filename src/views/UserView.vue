@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { WayForLogin, ArticleCollection } from "@/stores/counter";
+import { WayForLogin, ArticleCollection, deconstruction } from "@/stores/counter";
 
 const route = useRoute();
 const router = useRouter();
@@ -11,6 +11,8 @@ const { userToken } = storeToRefs(store);
 const dark = ArticleCollection();
 const { lightAndFont } = storeToRefs(dark);
 const { changeLight } = dark;
+const Subscribe = deconstruction();
+const { locatSubscribe } = storeToRefs(Subscribe);
 const checked = ref("true");
 const token: { passWord: string; userName: string } = ref(userToken);
 
@@ -23,6 +25,10 @@ const goLogin = () => {
     path: "/login",
   });
 };
+
+const goFollow = () => {
+  router.push("/follow");
+}
 
 onMounted(() => {
   checked.value = !lightAndFont.value.isLight;
@@ -46,8 +52,8 @@ onMounted(() => {
     </div>
 
     <ul class="list">
-      <li>
-        <span class="list-num">0</span>
+      <li @click="goFollow">
+        <span class="list-num">{{locatSubscribe.length}}</span>
         <span class="list-text">收藏</span>
       </li>
       <li>
