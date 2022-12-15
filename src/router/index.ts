@@ -60,43 +60,52 @@ const router = createRouter({
         keepAlive: false,
       },
     },
-
-    // 阅读
-    // {
-    //   path: '/',
-    //   name: 'read',
-    //   component: ReadView,
-    //   meta: {
-    //     keepAlive: true,
-    //   },
-    // },
+    // 音频专区路由
     {
-      path:'/choicebook',
-      name:'choicebook',
+      path: '/audio-series',
+      name: 'audio-series',
+      component: () => import("../components/AudioSeriesView.vue"),
+      meta: {
+        keepAlive: false,
+      },
+    },
+
+    // 首页搜索
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import("../search/HomeSearch.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    },
+    {
+      path: '/choicebook',
+      name: 'choicebook',
       component: () => import("../views/ChoiceBook.vue"),
       meta: {
         keepAlive: true,
       },
     },
     {
-      path:'/magazinedata',
-      name:'magazinedata',
+      path: '/magazinedata',
+      name: 'magazinedata',
       component: () => import("../views/magazineData.vue"),
       meta: {
         keepAlive: true,
       },
     },
     {
-      path:'/subjectdata',
-      name:'subjectdata',
+      path: '/subjectdata',
+      name: 'subjectdata',
       component: () => import("../views/subjectData.vue"),
       meta: {
         keepAlive: true,
       },
     },
     {
-      path:'/themedata',
-      name:'themedata',
+      path: '/themedata',
+      name: 'themedata',
       component: () => import("../views/themeData.vue"),
       meta: {
         keepAlive: true,

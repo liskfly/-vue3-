@@ -1,5 +1,22 @@
 <script setup lang="ts">
 import TextRun from "../components/TextRun.vue"
+import { ref, onMounted, nextTick } from "vue"
+import type { Article } from "../typing"
+import { API } from "../apis/getData"
+
+
+const newsweek = ref<Article[]>([])
+const textArr = ref<any>([])
+onMounted(async () => {
+    let { data } = await API.getNewsWeek()
+    // console.log(data);
+    
+    // newsweek.value = data.data[0].article
+    // newsweek.value.forEach(item => {
+    //     textArr.value.push(item.summary)
+    // })
+    // timer()
+})
 </script>
 
 <template>
@@ -12,7 +29,7 @@ import TextRun from "../components/TextRun.vue"
                     <img src="@/assets/img/3w.png" alt="calendar">
                 </div>
             </div>
-            <div class="audio-img"></div>
+            <!-- <div class="audio-img" :class="{ playmg: playChoose }" @click="sentAudioId(n.id, n.audioserie_id)"></div> -->
         </div>
 
         <div class="news-box">

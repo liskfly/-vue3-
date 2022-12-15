@@ -41,3 +41,8 @@ export const getDate = (time: any) => {
 export const getIcon = (name: string) => {
     return new URL(`../assets/img/${name}.png`, import.meta.url).href;
 }
+
+export const getAllDate = (a: string) => {
+    let date = new Date(a);
+    return date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
+}

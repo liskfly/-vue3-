@@ -7,23 +7,24 @@ import { getDate, getIcon } from '../utils/index'
 
 const route = useRoute();
 const router = useRouter();
-
-const id: any = route.query.article_id
+const scroll = ref(0);
+const back = ref<any>();
+const goback = ref<any>();
+const articles = ref<ArticleContent>();
+const recommeds = ref<ArticleRecommend[]>();
+const id: any = route.query.article_id;
 // API.getArticleData(id)
 
 const goBack = () => {
     window.history.go(-1)
 }
 
-const scroll = ref(0)
 const scrollHieght = (event: any) => {
     // this.scroll = parseInt(event.target.scrollTop)
     scroll.value = parseInt(event.target.scrollTop)
     // console.log(event.target.scrollTop);
 }
 
-const articles = ref<ArticleContent>()
-const recommeds = ref<ArticleRecommend[]>()
 onMounted(async () => {
     let { data } = await API.getArticleData(id)
     articles.value = data.data
@@ -32,8 +33,6 @@ onMounted(async () => {
     recommeds.value = recommed.data.data
     // console.log(recommeds.value);
 })
-const back = ref<any>()
-const goback = ref<any>()
 
 watch(scroll, (newV) => {
     if (newV > 233) {
@@ -49,7 +48,7 @@ watch(scroll, (newV) => {
 
 <script lang="ts">
 export default {
-  name: "article",
+    name: "article",
 };
 </script>
 

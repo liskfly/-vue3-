@@ -73,6 +73,11 @@ const gotoArticle = (id: number) => {
   })
 }
 
+// 跳转搜索
+const gotoSearch = () => {
+  router.push('/search')
+}
+
 const banners = ref<BannersType[]>([])
 onMounted(async () => {
   let { data } = await API.getBanner()
@@ -84,7 +89,7 @@ onMounted(async () => {
   <!-- 头部 -->
   <div class="headlines">
     <span>YiMagazine</span>
-    <img src="../assets/img/Yg.png" />
+    <img @click="gotoSearch" src="../assets/img/Yg.png" />
   </div>
 
   <!-- 轮播图 -->
@@ -184,11 +189,13 @@ onMounted(async () => {
 
     .text {
       text-align: left;
-      h2{
+
+      h2 {
         color: black;
         font-size: 16px;
         font-weight: 900;
       }
+
       span {
         // display: inline-block;
         // margin-top: 10px;

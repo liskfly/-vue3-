@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 // 全局注册需要用的vant插件
-import { Tabbar, TabbarItem, Swipe, SwipeItem, List, Lazyload, Tab, Tabs } from 'vant';
+import { Tabbar, TabbarItem, Swipe, SwipeItem, List, Lazyload, Tab, Tabs, Search, Popup, Slider } from 'vant';
 import App from "./App.vue";
 import router from "./router";
 
@@ -22,6 +22,9 @@ app.use(SwipeItem);
 app.use(List);
 app.use(Tab);
 app.use(Tabs);
+app.use(Search);
+app.use(Popup);
+app.use(Slider);
 app.use(Lazyload, {
     lazyComponent: true,
 });

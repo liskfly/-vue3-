@@ -40,7 +40,16 @@ export const API = {
     },
 
     // 音频详情
-    getAudioData: (id: number) => {
+    getAudioData: (id: any) => {
         return axios.get(`http://api2021.cbnweek.com:80/v4/articles/${id}`)
+    },
+
+    // 音频专区
+    getAudioSeries: (id: number) => {
+        return axios.get(`http://api2021.cbnweek.com/v4/audio_series?id=${id}&type=AudioCourse&equipment=android`)
+    },
+    // 音频动态组件评论
+    getComment: (id: number) => {
+        return axios.get(`http://api2021.cbnweek.com:80/v4/articles/${id}/audio_comments?page=1&per=20&type=AudioArticle`)
     },
 }
