@@ -25,7 +25,7 @@ onMounted(async () => {
 
 <script lang="ts">
 export default {
-  name: "audio",
+  name: "audioPage",
 };
 </script>
 

@@ -7,7 +7,7 @@ import { Func } from "@/data/data";
 
 const route = useRoute();
 const router = useRouter();
-const bookData = ref(<Subject>{})
+const bookData = ref(<Subject>{});
 const id: number = route.query.id as unknown as number;
 const number: any = ref();
 const isTrue = ref(false);
@@ -29,12 +29,9 @@ const getMonthDay = (date: string) => {
 const getChoiceList = async (id: number) => {
   let { data } = await Api.getBookDataList("subjects", id, "");
   bookData.value = data.data;
-  console.log(bookData.value);
-
 };
 
 const handleScrollx = () => {
-  console.log(number.value);
   top.value = number.value.getBoundingClientRect().top;
   if (top.value < 35) {
     isTrue.value = true;
@@ -42,6 +39,25 @@ const handleScrollx = () => {
     isTrue.value = false;
   }
 };
+
+const gotoArticle = (id: number) => {
+  router.push({
+    path: '/article',
+    query: {
+      article_id: id
+    }
+  })
+}
+
+const goCollection = (id:number) => {
+      router.push({
+      path: "/Collections",
+      query: {
+        'type':'authors',
+        'id':id
+      },
+    });
+}
 
 onMounted(() => {
   window.addEventListener("scroll", handleScrollx, true);
@@ -62,6 +78,13 @@ onBeforeMount(() => {
   getChoiceList(id);
 });
 </script>
+
+<script lang="ts">
+export default {
+  name: "subject",
+};
+</script>
+
 <template>
   <div>
     <div class="bookdata" v-if="bookData.name" :style="{ backgroundImage: `url(${bookData.cover_url})` }">
@@ -88,7 +111,7 @@ onBeforeMount(() => {
         </div>
         <div class="description">{{ bookData.description }}</div>
         <div class="comment">
-          <div class="comment-list" v-for="{ id, introduction, avatar, name } in bookData.authors" :key="id">
+          <div class="comment-list" v-for="{ id, introduction, avatar, name } in bookData.authors" :key="id" @click="goCollection(id)">
             <div class="introduction">{{ introduction }}</div>
             <div class="avatar">
               <img :src="avatar">
@@ -100,7 +123,8 @@ onBeforeMount(() => {
         <div class="newest">
           <div v-for="(
           { id, title, summary, display_time, read_time }
-        ) in bookData.articles" :key="id" class="newest-list">
+        ) in bookData.articles" :key="id" class="newest-list"
+        @click="gotoArticle(id)">
 
             <!-- <div v-for="(
           { id, title, summary, display_time, read_time }
@@ -157,8 +181,13 @@ onBeforeMount(() => {
     }
 
     .title {
+      width: 60vw;
       font-size: 20px;
       margin-right: 20px;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
@@ -257,9 +286,14 @@ onBeforeMount(() => {
     }
 
     .title-two {
+      width: 80vw;
       font-size: 20px;
       margin: 10px 0;
       font-weight: 700;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
@@ -290,7 +324,7 @@ onBeforeMount(() => {
       position: relative;
 
       .introduction {
-        width: 40vw;
+        width: calc(40vw - 20px);
         font-size: 14px;
         overflow: hidden;
         text-overflow: ellipsis;

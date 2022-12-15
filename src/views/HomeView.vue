@@ -73,6 +73,13 @@ const gotoArticle = (id: number) => {
   })
 }
 
+//跳转搜索
+const gotoSearch = () => {
+  router.push({
+    path: '/search'
+  })
+}
+
 const banners = ref<BannersType[]>([])
 onMounted(async () => {
   let { data } = await API.getBanner()
@@ -84,7 +91,7 @@ onMounted(async () => {
   <!-- 头部 -->
   <div class="headlines">
     <span>YiMagazine</span>
-    <img src="../assets/img/Yg.png" />
+    <img src="../assets/img/Yg.png" @click="gotoSearch" />
   </div>
 
   <!-- 轮播图 -->

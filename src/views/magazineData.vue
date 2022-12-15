@@ -3,8 +3,8 @@ import { ref, onBeforeMount, watch, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Api } from "@/apis";
 import type { magazineData } from "@/ReadPage";
-import { storeToRefs } from 'pinia'
-import { deconstruction } from "@/stores/counter"
+import { storeToRefs } from "pinia";
+import { deconstruction } from "@/stores/counter";
 
 const route = useRoute();
 const router = useRouter();
@@ -18,8 +18,8 @@ const top: any = ref();
 const loading = ref(false);
 const show = ref(true);
 const store = deconstruction();
-const { locatSubscribe } = storeToRefs(store)
-const { saveSubscribe } = store
+const { locatSubscribe } = storeToRefs(store);
+const { saveSubscribe } = store;
 
 const getChoiceList = async (id: number) => {
   let { data } = await Api.getBookDataList("magazines", id, "/articles");
@@ -37,8 +37,13 @@ const handleScrollx = () => {
 
 const isSubscribe = () => {
   show.value = !show.value;
-  saveSubscribe(id, "magazines", bookData.value[0].magazine_cover_url, bookData.value[0].magazine_summary)
-}
+  saveSubscribe(
+    id,
+    "magazines",
+    bookData.value[0].magazine_cover_url,
+    bookData.value[0].magazine_summary
+  );
+};
 
 const isstow = (index: number) => {
   stow.value[index] = !stow.value[index];
@@ -47,6 +52,15 @@ const isstow = (index: number) => {
 const goBack = () => {
   router.go(-1);
 };
+
+const gotoArticle = (id: number) => {
+  router.push({
+    path: '/article',
+    query: {
+      article_id: id
+    }
+  })
+}
 
 onMounted(() => {
   window.addEventListener("scroll", handleScrollx, true);
@@ -64,9 +78,11 @@ watch(
 );
 
 onBeforeMount(() => {
-  getChoiceList(id)
-  show.value = locatSubscribe.value.findIndex(item => item.id == id) == -1 ? true : false
-  console.log(locatSubscribe.value);
+  getChoiceList(id);
+  show.value =
+    locatSubscribe.value.findIndex((item) => item.id == id) == -1
+      ? true
+      : false;
 });
 </script>
 
@@ -119,7 +135,7 @@ export default {
               <img :src="column_icon" class="img" />
               <div ref="article" class="article" :style="{
                 backgroundColor: index % 2 == 0 ? '#d8eeff' : '#fff',
-                height: stow[index] ? `calc(23vw + ${articles.length * 41 + 72}px)` : '23vw',
+                height: stow[index] ? `calc(23vw + ${articles.length * 41 + 50}px)` : '23vw',
               }">
                 <div :class="stow[index] ? 'summaryshow' : 'summary'">
                   {{ column_summary }}
@@ -130,7 +146,7 @@ export default {
                 <!-- <div v-for="{ id, title } in articles" :key="id" class="articles" v-show="stow[index]"
                   @click="goToArticle(id)"> -->
 
-                <div v-for="{ id, title } in articles" :key="id" class="articles" v-show="stow[index]">
+                <div v-for="{ id, title } in articles" :key="id" class="articles" v-show="stow[index]"  @click="gotoArticle(id)">
                   {{ title }}
                 </div>
                 <div class="stow" v-show="stow[index]" @click="isstow(index)">
@@ -180,8 +196,13 @@ export default {
     }
 
     .title {
+      width: 60vw;
+      text-align: center;
       font-size: 20px;
       margin-right: 30px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
@@ -247,9 +268,14 @@ export default {
     }
 
     .title-two {
+      width: 80vw;
       font-size: 20px;
       margin: 10px 0;
       font-weight: 700;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .subscribe {
@@ -283,7 +309,7 @@ export default {
           width: 46vw;
           border: 1px solid #eeeeee;
           position: relative;
-          transition: all ease-in-out .7s;
+          transition: all ease-in-out 0.7s;
           overflow: hidden;
 
           .stow-false {

@@ -23,12 +23,10 @@ const getDate = (date: string) => {
 };
 
 watch(props, (newValue) => {
-  // readType = newValue.ReadList
   readList.value = [];
   year.value = 2021;
   readType.value = newValue.readType;
   getReadListFunc(year.value, readType.value);
-  console.log(newValue.readType);
 });
 
 const goBookData = (id: number, type: string) => {
@@ -63,20 +61,15 @@ const getReadListFunc = async (year: number, type: string) => {
   if (year < 2009) {
     finished.value = true;
   }
-  console.log(readList.value);
-  console.log(readList.value);
 };
 
 const downLoad = (url:string) => {
   window.location.href = url
-  // const url = window.location;
-  console.log(url);
 }
 
 const onLoad = () => {
   year.value--;
   yearArr.value.push(year.value);
-  console.log(yearArr.value);
   setTimeout(() => {
     getReadListFunc(year.value, readType.value);
   }, 1000);

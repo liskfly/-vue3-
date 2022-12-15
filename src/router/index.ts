@@ -71,38 +71,102 @@ const router = createRouter({
     //   },
     // },
     {
-      path:'/choicebook',
-      name:'choicebook',
+      path: '/choicebook',
+      name: 'choicebook',
       component: () => import("../views/ChoiceBook.vue"),
       meta: {
         keepAlive: true,
       },
     },
     {
-      path:'/magazinedata',
-      name:'magazinedata',
+      path: '/magazinedata',
+      name: 'magazinedata',
       component: () => import("../views/magazineData.vue"),
       meta: {
         keepAlive: true,
       },
     },
     {
-      path:'/subjectdata',
-      name:'subjectdata',
+      path: '/subjectdata',
+      name: 'subjectdata',
       component: () => import("../views/subjectData.vue"),
       meta: {
         keepAlive: true,
       },
     },
     {
-      path:'/themedata',
-      name:'themedata',
+      path: '/themedata',
+      name: 'themedata',
       component: () => import("../views/themeData.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import("../views/SearchPage.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    }, {
+      path: '/TypeSearch',
+      name: 'TypeSearch',
+      component: () => import("../components/SearchView/TypeSearch.vue"),
+      meta: {
+        keepAlive: true,
+      }
+    }, {
+      path: '/Collections',
+      name: 'Collections',
+      component: () => import("../components/ArticleCollections.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    }, {
+      path: '/login',
+      name: 'login',
+      component: () => import("../components/LoginPage.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    }, {
+      path: '/follow',
+      name: 'follow',
+      component: () => import("../components/FollowPage.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    }, {
+      path: '/collect',
+      name: 'collect',
+      component: () => import("../components/CollectionPage.vue"),
       meta: {
         keepAlive: true,
       },
     }
   ],
 });
+
+const blackRouter = ['/article', '/subjectdata', '/magazinedata', '/themedata']
+
+router.beforeEach((to, from, next) => {
+  if (getToken()) {
+    next()
+  }
+  else {
+    if (blackRouter.indexOf(to.path) === -1) {
+      next();
+    }
+    else {
+      next('/login');
+    }
+  }
+});
+
+function getToken() {
+  return JSON.parse(window.sessionStorage.getItem('token') || '0')
+}
+
 
 export default router;

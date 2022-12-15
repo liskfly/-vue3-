@@ -25,10 +25,7 @@ const getDate = (date: string) => {
 //点击切换阅读类型
 const onClickTab = (item: any) => {
   readType.value = tab.value[item.name].type;
-  // getReadListFunc(year.value,tab.value[name].type)
   getBannerFunc(tab.value[item.name].url);
-  console.log(name);
-
 };
 
 //请求阅读页轮播
@@ -157,10 +154,12 @@ onBeforeMount(() => {
       text-align: center;
       text-overflow: ellipsis;
       overflow: hidden;
+      margin: 10px 0;
     }
 
     .time {
       font-size: 12px;
+      margin: 10px 0;
     }
 
     .swipe-img {

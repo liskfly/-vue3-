@@ -1,0 +1,107 @@
+export interface SearchArticle {
+    searchable_type_type:string,
+    searchable_id:number,
+    content:Array<{
+        id:number,
+        title:string,
+        summary:string,
+        article_type:string,
+        visit_times:number,
+        publish_at:string,
+        really_tags:Array<any>,
+        probation:boolean,
+        cover_url:string,
+        authors:Array<{
+            id:number,
+            name:string
+        }>,
+        price:string,
+        is_jurisdiction:true
+    }>
+}
+
+export interface SearchTopic {
+    searchable_type:string,
+    searchable_id:number,
+    content:Array<{
+        id:number,
+        name:string,
+        followers_count:number,
+        has_latest_articles:boolean,
+        updated_articles_count:number
+    }>
+}
+
+export interface SearchColumn {
+    searchable_type:string,
+    searchable_id:number,
+    content:Array<{
+        id:number,
+        name:string,
+        default_mini_icon:null,
+        selected_mini_icon:null,
+        icon:null,
+        followers_count:number,
+        has_latest_articles:boolean,
+        updated_articles_count:number,
+        parent_column:Array<{
+            id:number,
+            name:string,
+            articles_count:number,
+            weight:number,
+            default_mini_icon:string,
+            selected_mini_icon:string,
+            icon:string,
+            followers_count:number,
+            has_latest_articles:boolean,
+            updated_articles_count:number
+        }>
+    }>
+}
+
+export interface SearchSubject {
+    searchable_type:string,
+    searchable_id:number,
+    content:Array<{
+        id:number,
+        name:string,
+        summary:string,
+        articles_count:number,
+        display_time:string,
+        cover_url:string,
+        price:number,
+        vip_price:number,
+        is_jurisdiction:boolean,
+        type:string
+    }>
+}
+
+export interface SearchAudio {
+    searchable_type:string,
+    searchable_id:number,
+    content:Array<{
+        id:number,
+        title:string,
+        summary:string,
+        article_type:string,
+        visit_times:number,
+        like_times:number,
+        share_url:string,
+        article_info_url:string,
+        read_time:number,
+        display_time:string,
+        comment_times:number,
+        share_visit_limit:number,
+        probation:boolean,
+        really_tags:Array<any>,
+        favorite_times:number,
+        audio_duration:number,
+        cover_url:string,
+        is_favorited:boolean,
+        is_like:false,
+        audio_url:string,
+        authors:Array<any>,
+        is_jurisdiction:boolean,
+        price:string
+    }>
+}

@@ -21,11 +21,18 @@ const goBack = () => {
   router.go(-1);
 };
 
+const gotoArticle = (id: number) => {
+  router.push({
+    path: '/article',
+    query: {
+      article_id: id
+    }
+  })
+}
+
 const getChoiceList = async (id: number) => {
-  // /articles?id=${id}&page=1&per=10
   let { data } = await Api.getBookDataList("themes", id, ``);
   bookData.value = data.data;
-  console.log(bookData.value, data);
 };
 
 const handleScrollx = () => {
@@ -55,6 +62,12 @@ watch(
 onBeforeMount(() => {
   getChoiceList(id);
 });
+</script>
+
+<script lang="ts">
+export default {
+  name: "theme",
+};
 </script>
 
 <template>
@@ -87,14 +100,14 @@ onBeforeMount(() => {
              in bookData.articles" :key="id" class="articles-list" @click="goToArticle(id)"> -->
 
             <li v-for="{ title, id, display_time, read_time, word_times, cover_url, summary }
-             in bookData.articles" :key="id" class="articles-list">
+             in bookData.articles" :key="id" class="articles-list" @click="gotoArticle(id)">
               <span class="title">{{ title }}</span>
               <span class="time">{{ getDate(display_time) + '·阅读时长' +
                   read_time + '分钟·' + word_times + '字'
               }}</span>
               <img v-lazy="cover_url">
               <div class="readers">
-                <span>{{ summary }}</span>
+                <span class="summary">{{ summary }}</span>
                 <div class="comment">
                   <span>{{ 1 }}</span>
                   <img src="../assets/static/gQ.png">
@@ -145,8 +158,13 @@ onBeforeMount(() => {
     }
 
     .title {
+      width: 60vw;
       font-size: 20px;
-      margin-right: 30px;
+      margin-right: 15px;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
@@ -213,9 +231,14 @@ onBeforeMount(() => {
     }
 
     .title-two {
+      width: 80vw;
       font-size: 20px;
       margin: 10px 0;
       font-weight: 700;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .themes {
@@ -253,6 +276,13 @@ onBeforeMount(() => {
             display: flex;
             font-size: 12px;
             justify-content: space-between;
+
+            .summary {
+              width: 60vw;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
 
             .comment {
               display: flex;

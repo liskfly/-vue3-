@@ -43,4 +43,17 @@ export const API = {
     getAudioData: (id: number) => {
         return axios.get(`http://api2021.cbnweek.com:80/v4/articles/${id}`)
     },
+
+    //文章目录
+    getArticleCatalogue: (id:number) => {
+        return axios.get(`https://api2021.cbnweek.com/v4/theme_subjects/theme_subject_article?article_id=${id}`)
+    },
+
+    getArticleCollections:(type:string,id:number) => {
+        return axios.get(`http://api2021.cbnweek.com/v4/${type}/${id}/articles?page=1&per=20`)
+    },
+
+    getCollectionsTop:(type:string,id:number) => {
+        return axios.get(`http://api2021.cbnweek.com/v4/${type}/${type == 'topics' ? `${id}`:type== 'columns' ? `${id}`:`${id}?id=${id}`}`)
+    }
 }
