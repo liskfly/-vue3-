@@ -2,14 +2,17 @@
 import { ref, onBeforeMount, watch } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { storeToRefs } from "pinia";
-import { ArticleCollection } from "@/stores/counter";
+import { ArticleCollection, WayForLogin } from "@/stores/counter";
 
 const store = ArticleCollection();
 const { lightAndFont } = storeToRefs(store);
+const login = WayForLogin();
+const { userToken } = storeToRefs(login);
+const token: { passWord: string; userName: string } = ref(userToken);
 </script>
 
 <template>
-  <div class="dark" v-show="!lightAndFont.isLight"></div>
+  <div class="dark" v-show="!lightAndFont.isLight && token.userName"></div>
   <RouterView v-slot="{ Component }">
     <keep-alive
       :exclude="['login', 'choice', 'collection', 'theme', 'magazine', 'articlePage','subject','typeSearch', 'audioDetail', 'audioSeries']">

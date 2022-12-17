@@ -2,8 +2,7 @@ import { ref } from "vue"
 import { defineStore } from 'pinia'
 import type { Subscribe } from "@/ReadPage";
 import type { ArticleCollect } from "@/typing";
-import { showToast } from "vant";
-
+import { showToast, showConfirmDialog } from "vant";
 export const deconstruction = defineStore('counter', () => {
   const locatSubscribe = ref<Subscribe[]>(JSON.parse(localStorage.getItem("subscribe") || '0') || []);
   function saveSubscribe(id: number, type: string, url: string, title: string): void {
@@ -103,7 +102,7 @@ export const CollectionFollow = defineStore('follow', () => {
 
 export const WayForLogin = defineStore('login',() => {
   const userData = ref<{passWord:string,userName:string}[]>(JSON.parse(localStorage.getItem("token") || '0') || []);
-  const userToken = ref<{passWord:string,userName:string}>(JSON.parse(sessionStorage.getItem("token") || '0') || {})
+  const userToken = ref<{passWord:string|null,userName:string|null}>(JSON.parse(sessionStorage.getItem("token") || '0') || {})
   function finishLogon(data:{passWord:string,userName:string}):void {
     let num = userData.value.findIndex((item) => {
       return item.userName == data.userName;
@@ -139,5 +138,16 @@ export const WayForLogin = defineStore('login',() => {
       }
     }
   }
-  return {userData , finishLogin , finishLogon , userToken}
+  function cancellation():void {
+    showConfirmDialog({
+      title: '标题',
+      message:
+        '确认注销',
+    })
+      .then(() => {
+        userToken.value = {passWord:null,userName:null}
+        window.sessionStorage.setItem('token', JSON.stringify(userToken.value))
+      })
+  }
+  return {userData , finishLogin , finishLogon , userToken , cancellation}
 })

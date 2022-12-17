@@ -2,12 +2,17 @@
 import { ref, onMounted, watch, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { WayForLogin, ArticleCollection, deconstruction } from "@/stores/counter";
+import {
+  WayForLogin,
+  ArticleCollection,
+  deconstruction,
+} from "@/stores/counter";
 
 const route = useRoute();
 const router = useRouter();
 const store = WayForLogin();
 const { userToken } = storeToRefs(store);
+const { cancellation } = store
 const dark = ArticleCollection();
 const { lightAndFont } = storeToRefs(dark);
 const { changeLight } = dark;
@@ -27,8 +32,10 @@ const goLogin = () => {
 };
 
 const goFollow = () => {
-  router.push("/follow");
-}
+  if (token.value.userName) {
+    router.push("/follow");
+  }
+};
 
 onMounted(() => {
   checked.value = !lightAndFont.value.isLight;
@@ -44,7 +51,7 @@ onMounted(() => {
       </div>
       <div class="login">
         <div v-show="!token.userName" @click="goLogin">请登录</div>
-        <div v-show="token.userName">{{token.userName}}</div>
+        <div v-show="token.userName" @click="cancellation">{{token.userName}}</div>
       </div>
       <div class="userdata">
         <div class="data">资料</div>
@@ -53,7 +60,8 @@ onMounted(() => {
 
     <ul class="list">
       <li @click="goFollow">
-        <span class="list-num">{{locatSubscribe.length}}</span>
+        <span class="list-num" v-show="token.userName">{{locatSubscribe.length}}</span>
+        <span class="list-num" v-show="!token.userName">0</span>
         <span class="list-text">收藏</span>
       </li>
       <li>
@@ -74,7 +82,8 @@ onMounted(() => {
       <img class=pic src="../assets/img/2l.png">
       <div class="right">
         <span class="title">夜间模式</span>
-        <van-switch v-model="checked" size="20px" @change="change" />
+        <van-switch v-model="checked" size="20px" @change="change"  v-show="token.userName" />
+        <van-switch v-model="checked" size="20px" v-show="!token.userName"/>
       </div>
     </div>
     <div class="cell">
